@@ -192,7 +192,7 @@ var/global/floorIsLava = 0
 	// language toggles
 	body += "<br><br><b>Languages:</b><br>"
 	var/f = 1
-	for(var/datum/language/L as anything in SScharacters.all_languages())
+	for(var/datum/prototype/language/L as anything in tim_sort(RSlanguages.fetch_subtypes_immutable(/datum/prototype/language), /proc/cmp_name_asc))
 		if(!(L.language_flags & LANGUAGE_INNATE))
 			if(!f) body += " | "
 			else f = 0
@@ -827,9 +827,9 @@ var/datum/legacy_announcement/minor/admin_min_announcer = new
 	if(!check_rights(R_ADMIN))
 		return
 
-	world.update_hub_visibility(!world.visibility)
+	world.update_hub_visibility(!GLOB.hub_visibility)
 	log_admin("[key_name(usr)] toggled hub visibility.")
-	message_admins("[key_name_admin(usr)] toggled hub visibility.  The server is now [world.visibility ? "visible" : "invisible"] ([world.visibility]).", 1)
+	message_admins("[key_name_admin(usr)] toggled hub visibility.  The server is now [GLOB.hub_visibility ? "visible" : "invisible"] ([GLOB.hub_visibility]).", 1)
 	feedback_add_details("admin_verb","THUB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc
 
 /datum/admins/proc/toggletraitorscaling()
