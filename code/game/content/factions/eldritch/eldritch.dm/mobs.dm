@@ -50,13 +50,14 @@
 	invisibility = 26
 	see_invisible = 26
 
+	maxHealth = 999999
+	health = 999999
+	movement_base_speed = 10 / 2
+
 	icon_living = "anomaly"
 	icon_state = "anomaly"
 
 	ai_holder_type = /datum/ai_holder/polaris/simple_mob/inert/astar
-	can_be_pulled = FALSE
-
-
 
 
 
