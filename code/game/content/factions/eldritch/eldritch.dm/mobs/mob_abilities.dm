@@ -50,6 +50,7 @@
 	if(!target)
 		return
 
+	visible_message("[src]<span class='hierophant'> reverberates, 'EV'RUIM!'</span>")
 	var/obj/item/projectile/eldritch_teleport/P = new(get_turf(src))
 	P.firer = src
 	P.preparePixelProjectile(target, get_turf(src))
@@ -62,9 +63,39 @@
 	if(!target)
 		return
 
-	target.adjustHalLoss(50)
-	target.visible_message("<span class='warning'>[target] convulses in agony!</span>")
+	visible_message("[src]<span class='hierophant'> reverberates, 'AK'VUN!'</span>")
+	target.adjustHalLoss(40)
+	target.visible_message("<span class='boldwarning'>[target] convulses in agony!</span>")
 	playsound(target, 'sound/weapons/Dissolverray.ogg', 50, TRUE)
+
+/mob/living/simple_mob/animal/eldritch/entity/verb/emp_blast(mob/living/target in oview(7))
+	set name = "Disrupt"
+	set category = "Abilities"
+
+	if(!target)
+		return
+
+	var/turf/target_turf = get_turf(target)
+	if(!target_turf)
+		return
+
+	visible_message("[src]<span class='hierophant'> reverberates, 'IS'PRI!'</span>")
+	target.visible_message("<span class='danger'>[target] distorts as they emits a wave of crackling energy!</span>")
+	empulse(target_turf, 0, 1, 3, 4, 1)
+	target.adjustHalLoss(50)
+
+/mob/living/simple_mob/animal/eldritch/entity/verb/ignite_target(mob/living/target in oview(7))
+	set name = "Incinerate"
+	set category = "Abilities"
+
+	if(!target)
+		return
+
+	visible_message("[src]<span class='hierophant'> reverberates, 'VAO'TRUN!'</span>")
+	target.adjustFireLoss(30)
+	target.fire_stacks = max(target.fire_stacks, 6)
+	target.IgniteMob()
+	target.visible_message("<span class='boldwarning'>[target] erupts into a blazing inferno!</span>")
 
 
 
@@ -104,6 +135,7 @@
 				destinations += destination
 
 		if(destinations.len)
+			visible_message("[src]<span class='hierophant'> reverberates, 'IKO'VRIA'ESIN!!'</span>")
 			M.forceMove(pick(destinations))
 			M.visible_message("<span class='warning'>[M] is violently distorted into another location!</span>")
 			playsound(M, 'sound/magic/Repulse.ogg', 50, TRUE)
@@ -167,6 +199,7 @@
 		M.forceMove(pick(destinations))
 		M.visible_message("<span class='warning'>[M] distorts as they suddenly appear somewhere else!</span>")
 		playsound(M, 'sound/effects/uncloak.ogg', 50, TRUE)
+
 
 
 // Skinstealer
