@@ -12,10 +12,9 @@
 // Entity
 
 /mob/living/simple_mob/animal/eldritch/entity/on_bullet_act(obj/projectile/proj, impact_flags, list/bullet_act_args)
-	visible_message("<span class='warning'>The [proj.name] shimmers oddly off of [src]'s form!</span>", \
-					"<span class='warning'>The [proj.name] shimmers oddly off of [src]'s form!</span>")
+	visible_message("<span class='warning'>The [proj.name] reflects off of [src]'s form!</span>", \
+					"<span class='warning'>The [proj.name] reflects off of [src]'s form!</span>")
 
-	// Find a turf near or on the original location to bounce to.
 	if(proj.starting)
 		var/new_x = proj.starting.x + pick(0, 0, -1, 1, -2, 2, -2, 2, -2, 2, -3, 3, -3, 3)
 		var/new_y = proj.starting.y + pick(0, 0, -1, 1, -2, 2, -2, 2, -2, 2, -3, 3, -3, 3)
@@ -169,6 +168,10 @@
 		M.visible_message("<span class='warning'>[M] distorts as they suddenly appear somewhere else!</span>")
 		playsound(M, 'sound/effects/uncloak.ogg', 50, TRUE)
 
+
+// Skinstealer
+
+
 /mob/living/simple_mob/animal/eldritch/skinstealer
 	var/shapeshift_original_appearance
 	var/shapeshift_original_name
@@ -176,6 +179,23 @@
 	var/list/shapeshift_original_combat
 	var/list/shapeshift_original_verbs
 	var/is_shapeshifted = FALSE
+
+/mob/living/simple_mob/animal/eldritch/skinstealer/verb/choose_shapeshift()
+	set name = "Choose Form"
+	set category = "Abilities"
+
+	var/list/available_forms = list()
+	for(var/mob/living/simple_mob/simple_target in world)
+		if(simple_target == src)
+			continue
+		available_forms += simple_target
+
+	if(!available_forms.len)
+		return
+
+	var/mob/living/simple_mob/selected_form = input(src, "Choose a simple mob form to imitate.", "Choose Form") as null|anything in available_forms
+	if(selected_form && selected_form != src)
+		shapeshift(selected_form)
 
 /mob/living/simple_mob/animal/eldritch/skinstealer/verb/shapeshift(mob/living/target in view(7))
 	set name = "Shapeshift"
@@ -227,7 +247,9 @@
 			vars[property] = target.vars[property]
 
 	is_shapeshifted = TRUE
-	visible_message("<span class='warning'>[src] shifts into a new form!</span>")
+	new /obj/effect/particle_effect/smoke(get_turf(src))
+	visible_message("<span class='warning'>[src] destabilizes as it shifts form!</span>")
+	playsound(src, 'sound/effects/blobattack.ogg', 50, TRUE)
 
 /mob/living/simple_mob/animal/eldritch/skinstealer/verb/revert_shapeshift()
 	set name = "Revert Shapeshift"
@@ -250,7 +272,9 @@
 	shapeshift_original_name = null
 	shapeshift_original_desc = null
 	is_shapeshifted = FALSE
-	visible_message("<span class='warning'>[src] returns to its original form.</span>")
+	new /obj/effect/particle_effect/smoke(get_turf(src))
+	visible_message("<span class='warning'>[src] emits a sickening crack as it returns to its original form!</span>")
+	playsound(src, 'sound/effects/blobattack.ogg', 50, TRUE)
 
 
 

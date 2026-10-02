@@ -8,7 +8,7 @@
 
 
 /mob/living/simple_mob/animal/eldritch/death()
-	..(null,"<span class='hypnophrase'>warps and shifts as its form collapses in on itself, producing a noice which your mind cannot hope to comprehend.</span>")
+	..(null,"<span class='hypnophrase'>warps and shifts as its form collapses in on itself, producing a noise which your mind cannot hope to comprehend.</span>")
 	ghostize()
 	qdel(src)
 
@@ -33,8 +33,8 @@
 
 	density = FALSE
 
-	icon_living = "shade"
-	icon_state = "shade"
+	icon_living = "entity"
+	icon_state = "entity"
 	icon = 'code/game/content/factions/eldritch/eldritch.dmi/mobs/32x48.dmi'
 
 	density = 0
@@ -43,14 +43,14 @@
 
 /mob/living/simple_mob/animal/eldritch/skinstealer
 	name = "<span class='hypnophrase'>Abomination</span>"
-	desc = "A pillar of umbra mass that pulses with lights which your eyes can't make sense of. The longer you stare, the more your surroundings seem to shift."
+	desc = "A mockery of skin and flesh with a pair of wings that arches from its back. Its form incessantly shifts and molts, taking on new visuals every time you dare to look its way."
 
 	density = FALSE
 
-	icon_living = "angel"
-	icon_state = "angel"
+	icon_living = "skinstealer"
+	icon_state = "skinstealer"
 	icon = 'code/game/content/factions/eldritch/eldritch.dmi/mobs/31x42.dmi'
 
-	density = 0
-	maxHealth = 500
-	health = 500
+	density = 1
+	maxHealth = 700
+	health = 700
