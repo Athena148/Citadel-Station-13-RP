@@ -202,10 +202,8 @@
 		var/datum/map_level/level = SSmapping.allocate_level(/datum/map_level/dynamic)
 		var/z = level ? level.z_index : null
 		if(!z)
-			// Create and register the next z-level directly if the mapping allocator has no level available.
-			z = world.maxz + 1
-			world.maxz = z
-			to_chat(user,"<span class='warning'>Mapping allocation failed; creating the abduction z-level directly.</span>")
+			to_chat(user,"<span class='warning'>Mapping allocation failed.</span>")
+			return
 		var/area/areaInstance = new /area/darkspace_abduction(null)
 		areaInstance.addSorted()
 		for(var/x = 1 to world.maxx)
