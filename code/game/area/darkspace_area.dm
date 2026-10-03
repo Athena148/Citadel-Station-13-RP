@@ -2,4 +2,4 @@
 /area/darkspace_abduction
 	name = "Another Time And Place"
 	requires_power = FALSE
-	dynamic_lighting = 1
+	dynamic_lighting = TRUE
