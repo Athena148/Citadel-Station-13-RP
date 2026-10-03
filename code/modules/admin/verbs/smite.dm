@@ -199,7 +199,7 @@
 	if(!darkspace_abduction_z)
 		darkspace_abduction_z = -1
 		to_chat(user,"<span class='warning'>This is the first use of the verb this shift, it will take a minute to configure the abduction z-level. It will be z[world.maxz+1].</span>")
-		var/datum/map_level/level = SSmapping.allocate_level()
+		var/datum/map_level/level = SSmapping.allocate_level(/datum/map_level/dynamic)
 		var/z = level ? level.z_index : null
 		if(!z)
 			// Create and register the next z-level directly if the mapping allocator has no level available.
