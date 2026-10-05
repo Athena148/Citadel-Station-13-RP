@@ -209,9 +209,31 @@
 	var/shapeshift_original_appearance
 	var/shapeshift_original_name
 	var/shapeshift_original_desc
+	var/shapeshift_original_icon
+	var/shapeshift_original_icon_state
+	var/shapeshift_original_color
+	var/shapeshift_original_alpha
+	var/shapeshift_original_dir
+	var/shapeshift_original_pixel_x
+	var/shapeshift_original_pixel_y
+	var/shapeshift_original_transform
+	var/list/shapeshift_original_overlays
+	var/list/shapeshift_original_underlays
 	var/list/shapeshift_original_combat
 	var/list/shapeshift_original_verbs
 	var/is_shapeshifted = FALSE
+	var/list/shapeshift_blacklist = list(
+		/mob/living/simple_mob/animal/eldritch/skinstealer
+		/mob/living/simple_mob/animal/roach
+		/mob/living/simple_mob/animal/passive/mouse
+
+/mob/living/simple_mob/animal/eldritch/skinstealer/proc/is_shapeshift_blacklisted(mob/living/target)
+	if(!target)
+		return TRUE
+	for(var/blacklisted_type in shapeshift_blacklist)
+		if(istype(target, blacklisted_type))
+			return TRUE
+	return FALSE
 
 /mob/living/simple_mob/animal/eldritch/skinstealer/verb/choose_shapeshift()
 	set name = "Choose Form"
@@ -219,6 +241,8 @@
 
 	var/list/available_forms = list()
 	for(var/mob/living/simple_mob/simple_target in world)
+		if(is_shapeshift_blacklisted(simple_target))
+			continue
 		if(simple_target == src)
 			continue
 		available_forms += simple_target
@@ -234,7 +258,7 @@
 	set name = "Shapeshift"
 	set category = "Abilities"
 
-	if(!target || target == src)
+	if(!target || target == src || is_shapeshift_blacklisted(target))
 		return
 	if(is_shapeshifted)
 		revert_shapeshift()
@@ -242,7 +266,28 @@
 	shapeshift_original_appearance = appearance
 	shapeshift_original_name = name
 	shapeshift_original_desc = desc
+	shapeshift_original_icon = icon
+	shapeshift_original_icon_state = icon_state
+	shapeshift_original_color = color
+	shapeshift_original_alpha = alpha
+	shapeshift_original_dir = dir
+	shapeshift_original_pixel_x = pixel_x
+	shapeshift_original_pixel_y = pixel_y
+	shapeshift_original_transform = transform
+	shapeshift_original_overlays = overlays.Copy()
+	shapeshift_original_underlays = underlays.Copy()
+	// Copy the complete appearance so icon metadata and other appearance-level properties are retained.
 	appearance = target.appearance
+	icon = target.icon
+	icon_state = target.icon_state
+	color = target.color
+	alpha = target.alpha
+	dir = target.dir
+	pixel_x = target.pixel_x
+	pixel_y = target.pixel_y
+	transform = target.transform
+	overlays = target.overlays.Copy()
+	underlays = target.underlays.Copy()
 	name = target.name
 	desc = target.desc
 	shapeshift_original_verbs = verbs.Copy()
@@ -292,6 +337,16 @@
 		return
 
 	appearance = shapeshift_original_appearance
+	icon = shapeshift_original_icon
+	icon_state = shapeshift_original_icon_state
+	color = shapeshift_original_color
+	alpha = shapeshift_original_alpha
+	dir = shapeshift_original_dir
+	pixel_x = shapeshift_original_pixel_x
+	pixel_y = shapeshift_original_pixel_y
+	transform = shapeshift_original_transform
+	overlays = shapeshift_original_overlays
+	underlays = shapeshift_original_underlays
 	name = shapeshift_original_name
 	desc = shapeshift_original_desc
 	if(shapeshift_original_combat)
@@ -299,15 +354,26 @@
 			vars[property] = shapeshift_original_combat[property]
 	shapeshift_original_combat = null
 	if(shapeshift_original_verbs)
-		verbs = shapeshift_original_verbs
+		for(var/verb_path in verbs.Copy())
+			if(!(verb_path in shapeshift_original_verbs))
+				verbs -= verb_path
 	shapeshift_original_verbs = null
 	shapeshift_original_appearance = null
 	shapeshift_original_name = null
 	shapeshift_original_desc = null
+	shapeshift_original_icon = null
+	shapeshift_original_icon_state = null
+	shapeshift_original_color = null
+	shapeshift_original_alpha = null
+	shapeshift_original_dir = null
+	shapeshift_original_pixel_x = null
+	shapeshift_original_pixel_y = null
+	shapeshift_original_transform = null
+	shapeshift_original_overlays = null
+	shapeshift_original_underlays = null
 	is_shapeshifted = FALSE
 	new /obj/effect/particle_effect/smoke(get_turf(src))
 	visible_message("<span class='warning'>[src] emits a sickening crack as it returns to its original form!</span>")
 	playsound(src, 'sound/effects/blobattack.ogg', 50, TRUE)
-
 
 
