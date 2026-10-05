@@ -1,6 +1,8 @@
 // Fragment
 
 /mob/living/simple_mob/animal/eldritch/fragment/Click(mob/user, location, control, params)
+	if(invisibility == 25)
+		return ..()
 	var/list/modifiers = params2list(params)
 	if(modifiers["shift"])
 		return
@@ -15,14 +17,15 @@
 	visible_message("<span class='warning'>The [proj.name] reflects off of [src]'s form!</span>", \
 					"<span class='warning'>The [proj.name] reflects off of [src]'s form!</span>")
 
-	if(proj.starting)
-		var/new_x = proj.starting.x + pick(0, 0, -1, 1, -2, 2, -2, 2, -2, 2, -3, 3, -3, 3)
-		var/new_y = proj.starting.y + pick(0, 0, -1, 1, -2, 2, -2, 2, -2, 2, -3, 3, -3, 3)
-		var/turf/curloc = get_turf(src)
+	var/turf/curloc = get_turf(src)
+	var/start_x = proj.starting ? proj.starting.x : curloc.x
+	var/start_y = proj.starting ? proj.starting.y : curloc.y
+	var/new_x = start_x + pick(0, 0, -1, 1, -2, 2, -2, 2, -2, 2, -3, 3, -3, 3)
+	var/new_y = start_y + pick(0, 0, -1, 1, -2, 2, -2, 2, -2, 2, -3, 3, -3, 3)
 
-		// Redirect the projectile.
-		proj.legacy_redirect(new_x, new_y, curloc, src)
-		proj.reflected = 1
+
+	proj.legacy_redirect(new_x, new_y, curloc, src)
+	proj.reflected = TRUE
 
 	return PROJECTILE_IMPACT_REFLECT
 
@@ -64,7 +67,7 @@
 		return
 
 	visible_message("[src]<span class='hierophant'> reverberates, 'AK'VUN!'</span>")
-	target.adjustHalLoss(40)
+	target.adjustHalLoss(80)
 	target.visible_message("<span class='boldwarning'>[target] convulses in agony!</span>")
 	playsound(target, 'sound/weapons/Dissolverray.ogg', 50, TRUE)
 
@@ -223,9 +226,9 @@
 	var/list/shapeshift_original_verbs
 	var/is_shapeshifted = FALSE
 	var/list/shapeshift_blacklist = list(
-		/mob/living/simple_mob/animal/eldritch/skinstealer
-		/mob/living/simple_mob/animal/roach
-		/mob/living/simple_mob/animal/passive/mouse
+		/mob/living/simple_mob/animal/eldritch/skinstealer,
+		/mob/living/simple_mob/animal/roach,
+		/mob/living/simple_mob/animal/passive/mouse)
 
 /mob/living/simple_mob/animal/eldritch/skinstealer/proc/is_shapeshift_blacklisted(mob/living/target)
 	if(!target)
