@@ -21,6 +21,19 @@
 	name = "strange flask"
 	desc = "A flask made of some type of green glass. A variety of runes have been etched into the material, but it seems empty."
 
+/obj/item/eldritch/prop/lantern
+	icon = 'code/game/content/factions/eldritch/eldritch.dmi/objects.dmi'
+	icon_state = "lantern"
+	name = "lantern"
+	desc = "A glowing light held within a cage of iron which never dares to dim. A stalwart shield against the encroaching darkness."
+	light_color = "#e79771"
+	light_power = 0.8
+	light_range = 6
+	light_wedge = LIGHT_OMNI
+	item_icons = list(
+		SLOT_ID_LEFT_HAND = 'code/game/content/factions/eldritch/eldritch.dmi/object_inhands/lefthand.dmi',
+		SLOT_ID_RIGHT_HAND = 'code/game/content/factions/eldritch/eldritch.dmi/object_inhands/righthand.dmi'
+	)
 
 //Blades
 /obj/item/eldritch/blade/cursed
