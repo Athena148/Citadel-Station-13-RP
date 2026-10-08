@@ -129,6 +129,7 @@
 	name = "Darkness"
 	desc = "Darkness. Pure, unyielding darkness. It calls for you."
 	icon_state = "dark"
+	icon = 'code/game/content/factions/eldritch/eldritch.dmi/turf.dmi/darkness.dmi'
 
 
 // standalone walls
